@@ -1,0 +1,53 @@
+---
+title: "Inteligencia Artificial 1"
+output: html_notebook
+---
+
+```{r}
+#--PARTE 2--#
+library(readr)
+library(dplyr)
+data<-read.csv("datos.csv")
+#EJ A)1)
+data
+data%>%group_by(algoritmo,tablero)%>%summarise(Exito = sum(`h`== 0))
+# data%>%filter(h==0)%>%group_by(algoritmo,tablero)%>%summarise(tot=n(),med_time=mean(tiempo),desv_time=sd(tiempo))
+# data%>%group_by(Metodo)%>%summarise(Exito = sum(`Solucion final`== 0))
+
+data
+
+
+```
+2) 2)El tiempo de ejecución promedio y la desviación estándar para encontrar dicha solución. (se puede usar la función time.time() de python)
+```{r}
+# 
+data%>%group_by(algoritmo,tablero)%>%summarise(Promedio =mean(tiempo),DesviacionEstandar=sd(tiempo))
+```
+
+2)3)La cantidad de estados previos promedio y su desviación estándar por los que tuvo que pasar para llegar a una solución.
+
+
+```{r}
+data%>%group_by(algoritmo)%>%summarise(Promedio=mean(pasos),DesviacionEstandar=sd(pasos))
+```
+
+
+2)4)Realizar un gráfico de cajas (boxplot) que muestre la distribución de los tiempos de ejecución de cada algoritmo.
+```{r}
+data%>%ggplot()+
+  geom_boxplot(aes(x = algoritmo,y=tiempo,fill=algoritmo))
+```
+```{r}
+data%>%ggplot()+
+  geom_point(aes(x=iteracion,y=pasos))+
+  facet_wrap(~algoritmo )
+```
+
+2)B)Para cada uno de los algoritmos, Graficar la variación  de la función h() a lo largo de las iteraciones. (Considerar solo una ejecución en particular)
+```{r}
+data%>%ggplot()+
+  geom_point(aes(x = algoritmo , y = pasos))
+```
+C) Indicar según su criterio, cuál de los tres algoritmos implementados resulta más adecuado para la solución del problema de las n-reinas.
+En cuanto a mi criterio, según éstas pruebas, el algoritmo genético que armé tiene un rendimiento similar al de Sim.An., por lo que me quedo con el algoritmo Genético, pero, he de decir que el algoritmo de Sim.Ane tiene alguna falla (mia) ya que se estanca en H = 1, en caso de haber solucionado ese problema, yo intuyo que sería mejor que el algoritmo genético.
+Hill Climbing no lo considero ya que se estanca en un máximo local y las posibilidades de que encuentre H = 0 son casi imposibles.
